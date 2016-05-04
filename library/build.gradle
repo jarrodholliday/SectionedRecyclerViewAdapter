@@ -1,4 +1,14 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.novoda:bintray-release:0.3.4' // 0.3.5 currently broken
+    }
+}
+
 apply plugin: 'com.android.library'
+apply plugin: 'bintray-release'
 
 ext {
     PUBLISH_GROUP_ID = 'io.github.luizgrp.sectionedrecyclerviewadapter'
@@ -8,13 +18,13 @@ ext {
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.2"
+    buildToolsVersion "23.0.3"
 
     defaultConfig {
         minSdkVersion 11
         targetSdkVersion 23
-        versionCode 1
-        versionName "1.0"
+        versionCode 101004
+        versionName "1.0.4"
     }
     buildTypes {
         release {
@@ -27,8 +37,25 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:23.1.1'
-    compile 'com.android.support:recyclerview-v7:23.1.1'
+    compile 'com.android.support:appcompat-v7:23.3.0'
+    compile 'com.android.support:recyclerview-v7:23.3.0'
+}
+
+publish {
+    Properties properties = new Properties()
+    properties.load(project.rootProject.file('local.properties').newDataInputStream())
+    def user = properties.getProperty('bintrayUser')
+    def key = properties.getProperty('bintrayKey')
+    userOrg = 'jarrodholliday'
+    groupId = 'com.github.jarrodholliday'
+    artifactId = 'sectionedrecyclerviewadapter'
+    uploadName = 'SectionedRecyclerViewAdapter'
+    publishVersion = '1.0.4'
+    description = 'fork of https://github.com/luizgrp/SectionedRecyclerViewAdapter'
+    website = 'https://github.com/jarrodholliday/ProgressLayout'
+    bintrayUser = user
+    bintrayKey = key
+    dryRun = false
 }
 
 apply from: 'android-release-aar.gradle'
